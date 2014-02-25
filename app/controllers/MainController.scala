@@ -9,6 +9,7 @@ import model.{UserId, User}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import com.codahale.metrics.health.HealthCheckRegistry
+import infrastructure.{LoggerRabbitMQ, RabbitMQConnection, Instrumented, Config}
 
 object MainController extends Controller with Instrumented {
 

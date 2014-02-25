@@ -1,4 +1,4 @@
-import controllers.{Config, LoggerRabbitMQ}
+import infrastructure.{LoggerRabbitMQ, Config}
 import play.api.{Logger, Application, GlobalSettings}
 
 object Global extends GlobalSettings {

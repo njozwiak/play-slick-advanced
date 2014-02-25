@@ -1,7 +1,7 @@
-package controllers
+package infrastructure
 
 import com.rabbitmq.client.{QueueingConsumer, Channel}
-import akka.actor.{Props, Actor}
+import akka.actor.Actor
 import play.api.Logger
 
 class ListeningActor(channel: Channel, queue: String) extends Actor {

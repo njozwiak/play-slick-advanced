@@ -1,4 +1,4 @@
-package controllers
+package infrastructure
 
 import com.rabbitmq.client.Channel
 import play.api.Logger

@@ -1,4 +1,4 @@
-package controllers
+package infrastructure
 
 import play.api.libs.concurrent.Akka
 import akka.actor.Props
