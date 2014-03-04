@@ -10,6 +10,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import com.codahale.metrics.health.HealthCheckRegistry
 import infrastructure.{LoggerRabbitMQ, RabbitMQConnection, Instrumented, Config}
+import play.api.data.validation.ValidationError
 
 object MainController extends Controller with Instrumented {
 
@@ -21,12 +22,17 @@ object MainController extends Controller with Instrumented {
   implicit val userWrite = Json.writes[User]
 
   implicit val userIdRead = Json.reads[UserId]
-  implicit val userRead: Reads[User] = (
-        (__ \ "id").readNullable[UserId] and
-        (__ \ "email").read(minLength[String](10)) and
-        (__ \ "firstName").read[String] and
-        (__ \ "lastName").read[String]
-  ) (User)
+
+  def lastNameReads(implicit r: Reads[String]): Reads[String] = r.filter(ValidationError("error.lastName.numbers"))(_.matches("\\S+\\d{4}$"))
+
+  implicit val userRead: Reads[User] = {(
+    (__ \ "id").readNullable[UserId] and
+    (__ \ "email").read(email keepAnd minLength[String](5)) and
+    (__ \ "firstName").read(minLength[String](2) andKeep maxLength[String](30)) and
+    (__ \ "lastName").read(lastNameReads) and
+    (__ \ "dateAccess").read(jodaLocalDateReads("yyyyMMdd"))
+    )(User)
+  }
 
   def users = DBAction {
    implicit rs =>
@@ -48,7 +54,7 @@ object MainController extends Controller with Instrumented {
    implicit rs =>
      rs.request.body.validate[User].map {
         case user =>
-          UsersService save User(None, user.email, user.firstName, user.lastName)
+          UsersService save User(None, user.email, user.firstName, user.lastName, user.dateAccess)
           Created("User Created")
       }.recoverTotal {
        e => NotFound("Detected error:" + JsError.toFlatJson(e))

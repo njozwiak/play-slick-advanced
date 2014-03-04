@@ -2,6 +2,8 @@ package model
 
 import scala.slick.session.Session
 import org.virtuslab.unicorn.ids._
+import java.util.Date
+import org.joda.time.LocalDate
 
 /** Id class for type-safe joins and queries. */
 case class UserId(id: Long) extends AnyVal with BaseId
@@ -21,7 +23,8 @@ object UserId extends IdCompanion[UserId]
 case class User(id: Option[UserId],
                 email: String,
                 firstName: String,
-                lastName: String) extends WithId[UserId]
+                lastName: String,
+                dateAccess:LocalDate) extends WithId[UserId]
 
 /** Table definition for users. */
 object Users extends IdTable[UserId, User]("USERS") {
@@ -32,7 +35,9 @@ object Users extends IdTable[UserId, User]("USERS") {
 
   def lastName = column[String]("LAST_NAME", O.NotNull)
 
-  def base = email ~ firstName ~ lastName
+  def dateAccess = column[LocalDate]("DATE_ACCESS", O.NotNull)
+
+  def base = email ~ firstName ~ lastName ~ dateAccess
 
   override def * = id.? ~: base <> (User.apply _, User.unapply _)
 
