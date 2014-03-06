@@ -5,6 +5,7 @@ import play.api.test.WithApplication
 import play.api.db.slick.DB
 import model.User
 import scala.slick.session.Session
+import org.joda.time.LocalDate
 
 class UsersServiceTest extends Specification {
 
@@ -15,7 +16,7 @@ class UsersServiceTest extends Specification {
         implicit session: Session =>
           object UsersService extends UsersService
 
-          val user = User(None, "test@email.com", "Krzysztof", "Nowak")
+          val user = User(None, "test@email.com", "Krzysztof", "Nowak", new LocalDate(2014,03,15))
           val userId = UsersService save user
           val userOpt = UsersService findById userId
 
