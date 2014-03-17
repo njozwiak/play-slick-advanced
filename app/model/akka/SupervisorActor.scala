@@ -1,10 +1,11 @@
 package model.akka
 
 import scala.concurrent.duration._
-import akka.actor.{Props, OneForOneStrategy, ActorLogging, Actor}
+import akka.actor.{Props, OneForOneStrategy, ActorLogging}
 import akka.actor.SupervisorStrategy.{Escalate, Stop, Restart, Resume}
+import infrastructure.ActorMetrics
 
-class SupervisorActor extends Actor with ActorLogging {
+class SupervisorActor extends ActorMetrics with ActorLogging {
 
   val workerActor = context.actorOf(Props[WorkerActor], name = "workerActor")
   val workerActor2 = context.actorOf(Props[WorkerActor], name = "workerActor2")
@@ -16,7 +17,7 @@ class SupervisorActor extends Actor with ActorLogging {
     case _: Exception => Escalate
   }
 
-  def receive = {
+  def receiveActor = {
     case result:Result =>
       workerActor.tell(result, sender)
       //childActor ! result

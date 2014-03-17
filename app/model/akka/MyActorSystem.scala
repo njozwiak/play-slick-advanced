@@ -6,6 +6,7 @@ import akka.pattern.Patterns
 import scala.concurrent.duration.FiniteDuration
 import java.util.concurrent.TimeUnit
 import akka.util.Timeout
+import infrastructure.Config
 
 case class Result()
 
