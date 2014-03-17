@@ -24,7 +24,10 @@ libraryDependencies ++= Seq(
   "com.codahale.metrics" % "metrics-core" % "3.0.1",
   "com.codahale.metrics" % "metrics-graphite" % "3.0.1",
   "nl.grons" %% "metrics-scala" % "3.0.4",
-  "com.rabbitmq" % "amqp-client" % "2.8.1"
+  "com.rabbitmq" % "amqp-client" % "2.8.1",
+  "com.typesafe.akka" %% "akka-actor" % "2.3.0",
+  "com.typesafe.akka" %% "akka-testkit" % "2.3.0-RC4" % "test",
+  "org.scalatest" %% "scalatest" % "2.1.0" % "test"
   // Add your own project dependencies in the form:
   // "group" % "artifact" % "version"
 )
