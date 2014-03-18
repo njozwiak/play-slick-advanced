@@ -14,6 +14,7 @@ object MyActorSystem {
 
   def main(args: Array[String]): Unit = {
 
+    Config.initConsoleReporter
     val system = ActorSystem("faultTolerance")
     val log = system.log
 
@@ -45,6 +46,6 @@ object MyActorSystem {
 
     supervisor ! new IllegalArgumentException
 
-    system.shutdown()
+    //system.shutdown()
   }
 }
