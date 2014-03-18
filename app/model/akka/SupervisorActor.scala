@@ -3,9 +3,9 @@ package model.akka
 import scala.concurrent.duration._
 import akka.actor.{Props, OneForOneStrategy, ActorLogging}
 import akka.actor.SupervisorStrategy.{Escalate, Stop, Restart, Resume}
-import infrastructure.ActorMetrics
+import infrastructure.{Metrics, ActorMetrics}
 
-class SupervisorActor extends ActorMetrics with ActorLogging {
+class SupervisorActor extends Metrics with ActorLogging {
 
   val workerActor = context.actorOf(Props[WorkerActor], name = "workerActor")
   val workerActor2 = context.actorOf(Props[WorkerActor], name = "workerActor2")
